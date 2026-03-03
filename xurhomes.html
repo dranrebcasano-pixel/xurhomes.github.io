@@ -1,0 +1,1022 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Xurhomes | Orientation & RP Tracker</title>
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <style>
+    :root{
+      --bg1:#020c1b;
+      --bg2:#0a192f;
+      --gold:#d4af37;
+      --gold2:#f5d76e;
+      --white:#ffffff;
+      --muted:rgba(255,255,255,0.72);
+      --muted2:rgba(255,255,255,0.60);
+      --glass: rgba(255,255,255,0.06);
+      --glass2: rgba(2,12,27,0.78);
+      --border: rgba(212,175,55,0.28);
+      --shadow: 0 18px 55px rgba(0,0,0,0.50);
+      --radius: 22px;
+
+      --max: 1100px;
+    }
+
+    *{ margin:0; padding:0; box-sizing:border-box; }
+    html, body{ height:100%; }
+    body{
+  font-family:'Poppins', sans-serif;
+  color: var(--white);
+  background: url("bg.jpg") center center / cover no-repeat fixed;
+  overflow-x:hidden;
+  position: relative;
+}
+
+body::before{
+  content:"";
+  position:fixed;
+  inset:0;
+  background: linear-gradient(
+    to bottom,
+    rgba(2,12,27,0.35),
+    rgba(2,12,27,0.55)
+  );
+  backdrop-filter: blur(4px);
+  z-index:0;
+}
+
+main{
+  position:relative;
+  z-index:1;
+}
+
+    /* Subtle animated glow */
+    .glow{
+      position:fixed;
+      inset:-200px;
+      background:
+        radial-gradient(circle at 15% 25%, rgba(212,175,55,0.30), transparent 40%),
+        radial-gradient(circle at 85% 35%, rgba(245,215,110,0.18), transparent 45%),
+        radial-gradient(circle at 50% 90%, rgba(212,175,55,0.15), transparent 50%);
+      filter: blur(60px);
+      animation: floatGlow 12s ease-in-out infinite alternate;
+      pointer-events:none;
+      z-index:0;
+    }
+    @keyframes floatGlow{
+      from{ transform: translate3d(0,0,0) scale(1); opacity:0.85; }
+      to{ transform: translate3d(22px,-12px,0) scale(1.03); opacity:1; }
+    }
+
+    /* Layout helpers */
+    .container{
+      width:min(var(--max), 92vw);
+      margin:0 auto;
+    }
+    .card{
+      background: rgba(255,255,255,0.06);
+      border:1px solid rgba(255,255,255,0.25);
+      border-radius: var(--radius);
+      box-shadow: 0 25px 60px rgba(0,0,0,0.45);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+    }
+
+    /* HEADER */
+    header{
+      position:sticky;
+      top:0;
+      z-index:1000;
+      background: rgba(2,12,27,0.72);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(212,175,55,0.25);
+    }
+    .header-inner{
+      height:78px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:14px;
+    }
+    .logo{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      font-family:'Playfair Display', serif;
+      font-size:24px;
+      font-weight:700;
+      color: var(--gold);
+      letter-spacing:0.3px;
+      user-select:none;
+      white-space:nowrap;
+    }
+    .dot{
+      width:10px;height:10px;border-radius:999px;
+      background:linear-gradient(45deg,var(--gold),var(--gold2));
+      box-shadow:0 0 0 6px rgba(212,175,55,0.10);
+      flex:0 0 auto;
+    }
+
+    nav{
+      display:flex;
+      align-items:center;
+      gap:8px;
+    }
+    .nav-link{
+      position:relative;
+      padding:10px 14px;
+      border-radius:999px;
+      text-decoration:none;
+      color: rgba(255,255,255,0.86);
+      font-weight:600;
+      font-size:13.5px;
+      transition: 0.22s ease;
+      cursor:pointer;
+      user-select:none;
+    }
+    .nav-link:hover{
+      background: rgba(255,255,255,0.06);
+      color: var(--gold2);
+      transform: translateY(-1px);
+    }
+    .nav-link.active{
+      background: linear-gradient(45deg, rgba(212,175,55,0.18), rgba(245,215,110,0.08));
+      border: 1px solid rgba(212,175,55,0.30);
+      color: var(--gold2);
+      box-shadow: 0 10px 22px rgba(212,175,55,0.10);
+    }
+
+    .header-cta{
+      display:flex;
+      align-items:center;
+      gap:10px;
+    }
+
+    .pill{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:10px 12px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,0.14);
+      background: rgba(255,255,255,0.05);
+      color: rgba(255,255,255,0.85);
+      font-size:12.5px;
+      font-weight:600;
+      white-space:nowrap;
+    }
+    .pill i{ color: var(--gold2); }
+
+    .menu-btn{
+      display:none;
+      width:44px;
+      height:44px;
+      border-radius:12px;
+      border:1px solid rgba(212,175,55,0.30);
+      background: rgba(255,255,255,0.05);
+      color: var(--gold2);
+      cursor:pointer;
+      align-items:center;
+      justify-content:center;
+      font-size:18px;
+    }
+
+    /* Mobile dropdown nav */
+    .mobile-nav{
+      display:none;
+      border-top: 1px solid rgba(212,175,55,0.18);
+      background: rgba(2,12,27,0.86);
+      backdrop-filter: blur(10px);
+      padding:10px 0 14px;
+    }
+    .mobile-nav.show{ display:block; }
+    .mobile-nav .nav-link{
+      display:block;
+      margin:8px auto;
+      width:min(var(--max), 92vw);
+      text-align:center;
+    }
+
+    /* MAIN SECTIONS */
+    main{
+      position:relative;
+      z-index:1;
+      padding:26px 0 40px;
+    }
+    section{
+      padding:26px 0;
+      scroll-margin-top: 92px; /* for sticky header */
+    }
+
+    /* HERO */
+    .hero{
+      padding:10px 0 18px;
+    }
+    .hero-grid{
+      display:grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap:18px;
+      align-items:stretch;
+    }
+    .hero-left{
+      padding:22px;
+    }
+    .kicker{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      font-size:12.5px;
+      font-weight:700;
+      letter-spacing:0.12em;
+      text-transform:uppercase;
+      color: rgba(245,215,110,0.90);
+      background: rgba(212,175,55,0.10);
+      border:1px solid rgba(212,175,55,0.22);
+      padding:8px 12px;
+      border-radius:999px;
+    }
+    h1{
+      font-family:'Playfair Display', serif;
+      font-size:44px;
+      line-height:1.08;
+      margin:14px 0 10px;
+      color: var(--gold2);
+      letter-spacing:0.3px;
+    }
+    .lead{
+      max-width: 640px;
+      color: var(--muted);
+      line-height:1.75;
+      font-size:15.5px;
+      margin-bottom:14px;
+    }
+
+    .quick-points{
+      display:grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap:10px;
+      margin-top:14px;
+    }
+    .qp{
+      padding:12px 12px;
+      border-radius:16px;
+      border:1px solid rgba(255,255,255,0.10);
+      background: rgba(255,255,255,0.04);
+    }
+    .qp .t{
+      display:flex;
+      align-items:center;
+      gap:8px;
+      font-weight:800;
+      font-size:13.5px;
+      color: rgba(255,255,255,0.92);
+    }
+    .qp .t i{ color: var(--gold2); }
+    .qp p{
+      margin-top:6px;
+      color: var(--muted2);
+      font-size:12.8px;
+      line-height:1.6;
+    }
+
+    /* VIDEO CARD */
+    .hero-right{
+      padding:18px;
+      display:flex;
+      flex-direction:column;
+      gap:14px;
+    }
+    .video-box{
+      position:relative;
+      width:100%;
+      aspect-ratio: 16 / 9;
+      border-radius:18px;
+      overflow:hidden;
+      background: rgba(0,0,0,0.55);
+      border: 1px solid rgba(212,175,55,0.20);
+    }
+    video{
+      width:100%;
+      height:100%;
+      object-fit: contain;
+      background:black;
+    }
+    .video-overlay{
+      position:absolute;
+      inset:0;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      background: linear-gradient(180deg, rgba(0,0,0,0.28), rgba(0,0,0,0.72));
+      cursor:pointer;
+      transition: 0.2s ease;
+    }
+    .video-overlay:hover{
+      background: linear-gradient(180deg, rgba(212,175,55,0.10), rgba(0,0,0,0.72));
+    }
+    .play-pill{
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      padding:12px 16px;
+      border-radius:999px;
+      border:1px solid rgba(212,175,55,0.35);
+      background: rgba(0,0,0,0.35);
+      box-shadow: 0 12px 30px rgba(0,0,0,0.35);
+      font-weight:800;
+      color: var(--gold2);
+      user-select:none;
+    }
+    .play-icon{
+      width:42px;height:42px;border-radius:999px;
+      display:flex;align-items:center;justify-content:center;
+      background: linear-gradient(45deg, var(--gold), var(--gold2));
+      color:#081021;
+      box-shadow: 0 14px 30px rgba(212,175,55,0.18);
+    }
+
+    .progress-wrap{
+      position:absolute;
+      left:14px; right:14px; bottom:12px;
+      height:8px;
+      border-radius:999px;
+      background: rgba(255,255,255,0.12);
+      overflow:hidden;
+      border:1px solid rgba(255,255,255,0.10);
+    }
+    .progress-bar{
+      height:100%;
+      width:0%;
+      background: linear-gradient(90deg, var(--gold), var(--gold2));
+      border-radius:999px;
+      transition: width 0.08s linear;
+    }
+
+    .form-area{
+      padding:14px;
+      border-radius:18px;
+      background: rgba(255,255,255,0.04);
+      border:1px solid rgba(212,175,55,0.16);
+    }
+    .form-area h3{
+      font-size:14px;
+      margin-bottom:6px;
+      color: rgba(255,255,255,0.92);
+      font-weight:900;
+    }
+    .form-area p{
+      font-size:12.8px;
+      color: var(--muted2);
+      line-height:1.65;
+    }
+
+    .btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:10px;
+      margin-top:12px;
+      padding:14px 18px;
+      width:100%;
+      border-radius:999px;
+      border:none;
+      background: linear-gradient(45deg, var(--gold), var(--gold2));
+      color:#071022;
+      font-weight:900;
+      font-size:14px;
+      text-decoration:none;
+      box-shadow: 0 10px 22px rgba(212,175,55,0.20);
+      transition: 0.2s ease;
+      user-select:none;
+    }
+    .btn:hover{
+      transform: translateY(-2px);
+      box-shadow: 0 14px 30px rgba(212,175,55,0.28);
+    }
+    .btn.locked{
+      pointer-events:none;
+      opacity:0.55;
+      filter: grayscale(0.15);
+    }
+    .hint{
+      margin-top:10px;
+      font-size:12.3px;
+      color: rgba(255,255,255,0.70);
+      display:flex;
+      align-items:center;
+      gap:8px;
+    }
+    .hint i{ color: var(--gold2); }
+
+    /* CONTENT SECTIONS */
+    .section-title{
+      display:flex;
+      align-items:flex-end;
+      justify-content:space-between;
+      gap:14px;
+      margin-bottom:14px;
+    }
+    .section-title h2{
+      font-family:'Playfair Display', serif;
+      font-size:34px;
+      color: var(--gold2);
+      letter-spacing:0.2px;
+    }
+    .section-title p{
+      color: var(--muted);
+      font-size:13.5px;
+      max-width:520px;
+      line-height:1.6;
+    }
+
+    .grid-3{
+      display:grid;
+      grid-template-columns: repeat(3, minmax(0,1fr));
+      gap:14px;
+    }
+    .feature{
+      padding:18px;
+      border-radius:18px;
+      border:1px solid rgba(255,255,255,0.10);
+      background: rgba(255,255,255,0.04);
+    }
+    .feature .ic{
+      width:44px;height:44px;border-radius:14px;
+      display:flex;align-items:center;justify-content:center;
+      background: rgba(212,175,55,0.12);
+      border:1px solid rgba(212,175,55,0.28);
+      color: var(--gold2);
+      margin-bottom:10px;
+    }
+    .feature h3{
+      font-size:14px;
+      font-weight:900;
+      margin-bottom:6px;
+      color: rgba(255,255,255,0.92);
+    }
+    .feature p{
+      font-size:13px;
+      color: var(--muted2);
+      line-height:1.65;
+    }
+
+    .process{
+      padding:18px;
+    }
+    .steps{
+      display:grid;
+      grid-template-columns: repeat(3, minmax(0,1fr));
+      gap:12px;
+      margin-top:10px;
+    }
+    .step{
+      padding:14px;
+      border-radius:16px;
+      background: rgba(0,0,0,0.22);
+      border:1px solid rgba(255,255,255,0.08);
+    }
+    .step .top{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      margin-bottom:6px;
+    }
+    .badge{
+      width:28px;height:28px;border-radius:999px;
+      display:flex;align-items:center;justify-content:center;
+      background: rgba(212,175,55,0.18);
+      border:1px solid rgba(212,175,55,0.35);
+      color: var(--gold2);
+      font-weight:900;
+      font-size:12px;
+      flex:0 0 auto;
+    }
+    .step h4{
+      font-size:13.5px;
+      font-weight:900;
+      color: rgba(255,255,255,0.92);
+    }
+    .step p{
+      font-size:13px;
+      color: var(--muted2);
+      line-height:1.65;
+    }
+
+    .faq{
+      padding:18px;
+    }
+    details{
+      border:1px solid rgba(255,255,255,0.10);
+      background: rgba(255,255,255,0.04);
+      border-radius:16px;
+      padding:12px 14px;
+      margin:10px 0;
+    }
+    summary{
+      cursor:pointer;
+      font-weight:900;
+      color: rgba(255,255,255,0.92);
+      list-style:none;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+    }
+    summary::-webkit-details-marker{ display:none; }
+    summary .chev{ color: var(--gold2); }
+    details p{
+      margin-top:8px;
+      color: var(--muted2);
+      font-size:13px;
+      line-height:1.7;
+    }
+
+    /* SOCIAL */
+    .social-container{
+      display:grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap:14px;
+      width:100%;
+    }
+    .social-card{
+      background: rgba(255,255,255,0.05);
+      padding:16px 14px;
+      border-radius:18px;
+      border:1px solid rgba(212,175,55,0.22);
+      transition:0.22s ease;
+      text-align:center;
+      overflow:hidden;
+      position:relative;
+    }
+    .social-card:before{
+      content:"";
+      position:absolute;
+      inset:-60px -60px auto auto;
+      width:120px;
+      height:120px;
+      background: radial-gradient(circle, rgba(212,175,55,0.18), transparent 60%);
+      filter: blur(2px);
+      pointer-events:none;
+    }
+    .social-card:hover{
+      transform: translateY(-6px);
+      border-color: rgba(245,215,110,0.45);
+      background: rgba(212,175,55,0.08);
+    }
+    .social-card i{
+      font-size:34px;
+      margin-bottom:10px;
+      color: var(--gold2);
+    }
+    .social-card h3{
+      font-size:14px;
+      font-weight:900;
+      margin-bottom:8px;
+    }
+    .follow-btn{
+      display:inline-block;
+      padding:7px 14px;
+      border-radius:999px;
+      text-decoration:none;
+      font-size:12.5px;
+      font-weight:900;
+      color:#071022;
+      background: linear-gradient(45deg, var(--gold), var(--gold2));
+      box-shadow: 0 10px 18px rgba(212,175,55,0.18);
+      transition: 0.2s ease;
+    }
+    .follow-btn:hover{ transform: translateY(-1px); }
+
+    /* FOOTER */
+    footer{
+      margin-top:12px;
+      padding:22px 0 30px;
+      border-top: 1px solid rgba(212,175,55,0.18);
+      color: rgba(255,255,255,0.70);
+      font-size:12.5px;
+    }
+    .footer-grid{
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap:16px;
+      flex-wrap:wrap;
+    }
+    .footer-grid .small{
+      max-width:520px;
+      line-height:1.7;
+    }
+    .footer-links{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+    .footer-links a{
+      color: rgba(255,255,255,0.78);
+      text-decoration:none;
+      padding:8px 10px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,0.10);
+      background: rgba(255,255,255,0.04);
+    }
+    .footer-links a:hover{
+      color: var(--gold2);
+      border-color: rgba(212,175,55,0.25);
+    }
+
+    /* Responsive */
+    @media (max-width: 980px){
+      .hero-grid{ grid-template-columns: 1fr; }
+      .quick-points{ grid-template-columns: 1fr; }
+      .grid-3{ grid-template-columns: 1fr; }
+      .steps{ grid-template-columns: 1fr; }
+      .social-container{ grid-template-columns: repeat(2, minmax(0,1fr)); }
+    }
+    @media (max-width: 768px){
+      nav, .pill{ display:none; }
+      .menu-btn{ display:flex; }
+      h1{ font-size:32px; }
+      .section-title{ flex-direction:column; align-items:flex-start; }
+      .social-container{ grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+
+<body>
+ 
+  <div class="glow"></div>
+
+  <header>
+    <div class="container header-inner">
+      <div class="logo">
+        <span class="dot"></span>
+        Xurhomes
+      </div>
+      <div class="header-cta">
+        <div class="pill" id="statusPill">
+          <i class="fa-solid fa-lock"></i> Form Locked
+        </div>
+        <button class="menu-btn" id="menuBtn" aria-label="Menu">
+          <i class="fa-solid fa-bars"></i>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- HOME / HERO -->
+    <section id="home" class="hero">
+      <div class="container">
+        <div class="hero-grid">
+          <div class="card hero-left">
+            <span class="kicker"><i class="fa-solid fa-qrcode"></i> Scan • Watch • Fill Up</span>
+            <h1>Orientation Video First,<br/> then RP Tracker Form.</h1>
+            <p class="lead">
+              Para ma-access ang form, kailangan munang tapusin ang orientation video.
+              Pagkatapos nito, lalabas ang <b>Fill Up Form</b> at doon mo ilalagay ang details mo.
+            </p>
+
+            <div class="quick-points">
+              <div class="qp">
+                <div class="t"><i class="fa-solid fa-shield"></i> Controlled Access</div>
+                <p>Locked ang button hangga’t hindi tapos ang video.</p>
+              </div>
+              <div class="qp">
+                <div class="t"><i class="fa-solid fa-file-signature"></i> Google Form</div>
+                <p>Diretso sa form para accurate ang details.</p>
+              </div>
+              <div class="qp">
+                <div class="t"><i class="fa-solid fa-table"></i> Sheets Tracker</div>
+                <p>Ang submissions papasok sa “rp tracker” sheet.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="card hero-right">
+            <div class="video-box">
+              <video id="homeVideo" playsinline controlslist="nodownload">
+                <source src="content.mp4" type="video/mp4" />
+                Your browser does not support HTML5 video.
+              </video>
+
+              <div id="videoOverlay" class="video-overlay" role="button" aria-label="Play video">
+                <div class="play-pill">
+                  <span class="play-icon"><i class="fa-solid fa-play"></i></span>
+                  Tap to Play Orientation
+                </div>
+              </div>
+
+              <div class="progress-wrap" aria-hidden="true">
+                <div class="progress-bar" id="progressBar"></div>
+              </div>
+            </div>
+
+            <div class="form-area">
+              <h3>Step 2: Fill Up Form</h3>
+              <p>
+                Kapag natapos ang video, automatic na mag-u-unlock ang button.
+                Kung na-finish mo na dati, mag locked pa rin kahit i-refresh.
+              </p>
+
+              <a id="fillButton" class="btn locked" href="#" target="_blank" rel="noopener">
+                <i class="fa-solid fa-file-pen"></i> Fill Up Form
+              </a>
+
+              <div class="hint" id="lockHint">
+                <i class="fa-solid fa-lock"></i> Locked until video ends
+              </div>
+
+              <div class="hint" style="opacity:0.85;">
+                <i class="fa-solid fa-circle-info"></i> Tip: Use earphones for better audio.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ABOUT -->
+    <section id="about">
+      <div class="container">
+        <div class="section-title">
+          <h2>About Xurhomes</h2>
+          <p>
+            Short description ng purpose ng orientation at bakit kailangan ang form submission.
+            (Pwede mong palitan itong text.)
+          </p>
+        </div>
+
+        <div class="grid-3">
+          <div class="feature card">
+            <div class="ic"><i class="fa-solid fa-bullseye"></i></div>
+            <h3>Mission</h3>
+            <p>
+              Provide excellent service, quality results, and strong partnerships through integrity and professionalism.
+            </p>
+          </div>
+
+          <div class="feature card">
+            <div class="ic"><i class="fa-solid fa-eye"></i></div>
+            <h3>Vision</h3>
+            <p>
+              Become a trusted and innovative organization that creates long-term value and positive impact.
+            </p>
+          </div>
+
+          <div class="feature card">
+            <div class="ic"><i class="fa-solid fa-handshake"></i></div>
+            <h3>Commitment</h3>
+            <p>
+              Transparent process: watch orientation → submit details → tracked in RP sheet.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PROCESS -->
+    <section id="process">
+      <div class="container">
+        <div class="section-title">
+          <h2>How It Works</h2>
+          <p>Simple steps para siguradong napanood ang orientation bago mag-fill up.</p>
+        </div>
+
+        <div class="card process">
+          <div class="steps">
+            <div class="step">
+              <div class="top">
+                <div class="badge">1</div>
+                <h4>Scan QR Code</h4>
+              </div>
+              <p>Scan gamit camera/QR scanner at mapupunta ka dito sa website.</p>
+            </div>
+
+            <div class="step">
+              <div class="top">
+                <div class="badge">2</div>
+                <h4>Watch Orientation Video</h4>
+              </div>
+              <p>Tap play at tapusin ang video. May progress bar para makita ang completion.</p>
+            </div>
+
+            <div class="step">
+              <div class="top">
+                <div class="badge">3</div>
+                <h4>Fill Up Google Form</h4>
+              </div>
+              <p>Pag unlocked na, i-click ang button at i-submit ang details para pumasok sa “rp tracker”.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section id="faq">
+      <div class="container">
+        <div class="section-title">
+          <h2>FAQ</h2>
+          <p>Common questions para hindi na paulit-ulit ang instructions.</p>
+        </div>
+
+        <div class="card faq">
+          <details>
+            <summary>
+              Bakit naka-lock ang form button?
+              <span class="chev"><i class="fa-solid fa-chevron-down"></i></span>
+            </summary>
+            <p>
+              Para masigurong napanood muna ang orientation bago mag-submit ng details.
+            </p>
+          </details>
+
+          <details>
+            <summary>
+              Paano kung na-refresh ko yung page?
+              <span class="chev"><i class="fa-solid fa-chevron-down"></i></span>
+            </summary>
+            <p>
+              Kapag natapos mo na ang video, naka-save ang unlock status sa browser (localStorage),
+              kaya unlocked pa rin ito sa same device/browser.
+            </p>
+          </details>
+
+          <details>
+            <summary>
+              Saan napupunta ang data na sinubmit?
+              <span class="chev"><i class="fa-solid fa-chevron-down"></i></span>
+            </summary>
+            <p>
+              Sa Google Form responses, at naka-link sa Google Sheets na “rp tracker” (as configured sa form).
+            </p>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTACT / SOCIAL -->
+    <section id="contact">
+      <div class="container">
+        <div class="section-title">
+          <h2>Contact & Socials</h2>
+          <p>Gaya ng gusto mo: makita ng user lahat ng social media accounts.</p>
+        </div>
+
+        <div class="card" style="padding:18px;">
+          <div class="social-container">
+            <div class="social-card">
+              <i class="fab fa-facebook"></i>
+              <h3>Facebook</h3>
+              <a href="https://www.facebook.com/joseph.marbida" target="_blank" rel="noopener" class="follow-btn">Open</a>
+            </div>
+
+            <div class="social-card">
+              <i class="fab fa-instagram"></i>
+              <h3>Instagram</h3>
+              <a href="https://www.instagram.com/YourUsername" target="_blank" rel="noopener" class="follow-btn">Open</a>
+            </div>
+
+            <div class="social-card">
+              <i class="fab fa-tiktok"></i>
+              <h3>TikTok</h3>
+              <a href="https://www.tiktok.com/@YourUsername" target="_blank" rel="noopener" class="follow-btn">Open</a>
+            </div>
+
+            <div class="social-card">
+              <i class="fab fa-telegram"></i>
+              <h3>Telegram</h3>
+              <a href="https://t.me/YourChannelUsername" target="_blank" rel="noopener" class="follow-btn">Join</a>
+            </div>
+
+            <div class="social-card">
+              <i class="fab fa-whatsapp"></i>
+              <h3>WhatsApp</h3>
+              <a href="https://wa.me/639123456789" target="_blank" rel="noopener" class="follow-btn">Chat</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <div class="container footer-grid">
+        <div class="small">
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">
+            <span class="dot"></span>
+            <span style="font-family:'Playfair Display',serif;color:var(--gold2);font-weight:700;">Xurhomes</span>
+          </div>
+          <div>
+            This page is for orientation access and RP tracking. Data is collected via Google Forms and stored in the linked Google Sheets “rp tracker”.
+          </div>
+        </div>
+
+        <div class="footer-links">
+          <a href="#home">Home</a>
+          <a href="#about">About</a>
+          <a href="#process">Process</a>
+          <a href="#faq">FAQ</a>
+          <a href="#contact">Contact</a>
+        </div>
+      </div>
+      <div class="container" style="margin-top:14px;opacity:0.75;">
+        © <span id="year"></span> Xurhomes. All rights reserved.
+      </div>
+    </footer>
+  </main>
+
+  <script>
+  // ==========================
+  // CONFIG
+  // ==========================
+  const FORM_URL = "https://docs.google.com/forms/d/e/1FAIpQLSd0pS1DXuKDGmzdmnAInihiMxriPi7eGr2yHVlftDl1Z9mF1g/viewform?usp=header";
+
+  // ==========================
+  // ELEMENTS
+  // ==========================
+  const video = document.getElementById('homeVideo');
+  const overlay = document.getElementById('videoOverlay');
+  const fillButton = document.getElementById('fillButton');
+  const lockHint = document.getElementById('lockHint');
+  const progressBar = document.getElementById('progressBar');
+  const statusPill = document.getElementById('statusPill');
+  const menuBtn = document.getElementById('menuBtn');
+
+  fillButton.href = FORM_URL;
+
+  // ==========================
+  // SIMPLE MOBILE MENU FIX
+  // ==========================
+  if(menuBtn){
+    menuBtn.addEventListener('click', () => {
+      alert("Mobile menu not configured yet.");
+    });
+  }
+
+  // ==========================
+  // LOCK / UNLOCK
+  // ==========================
+  function lockForm(){
+    fillButton.classList.add('locked');
+    lockHint.innerHTML = '<i class="fa-solid fa-lock"></i> Locked until video ends';
+    statusPill.innerHTML = '<i class="fa-solid fa-lock"></i> Form Locked';
+  }
+
+  function unlockForm(){
+    fillButton.classList.remove('locked');
+    lockHint.innerHTML = '<i class="fa-solid fa-lock-open"></i> Unlocked! You can now fill up the form.';
+    statusPill.innerHTML = '<i class="fa-solid fa-lock-open"></i> Form Unlocked';
+  }
+
+  // ==========================
+  // INITIAL STATE
+  // ==========================
+  lockForm();
+  progressBar.style.width = "0%";
+  overlay.style.display = "flex";
+  video.currentTime = 0;
+
+  // ==========================
+  // PLAY VIDEO
+  // ==========================
+  overlay.addEventListener('click', async () => {
+    try{
+      await video.play();
+      overlay.style.display = 'none';
+    }catch(err){
+      console.log(err);
+    }
+  });
+
+  // ==========================
+  // PROGRESS BAR
+  // ==========================
+  video.addEventListener('timeupdate', () => {
+    if(video.duration){
+      const percent = (video.currentTime / video.duration) * 100;
+      progressBar.style.width = percent + "%";
+    }
+  });
+
+  // ==========================
+  // UNLOCK WHEN FINISHED
+  // ==========================
+  video.addEventListener('ended', () => {
+    progressBar.style.width = "100%";
+    unlockForm();
+  });
+
+  // ==========================
+  // FOOTER YEAR
+  // ==========================
+  document.getElementById('year').textContent = new Date().getFullYear();
+</script>
+</body>
+</html>
